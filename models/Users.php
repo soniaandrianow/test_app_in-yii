@@ -79,11 +79,12 @@ class Users extends ActiveRecord implements IdentityInterface
             ['password_repetition', 'required'],
             [['password_repetition'], 'string', 'max' => 255],
             ['password_repetition', 'compare', 'compareAttribute' => 'password'],
-            [['password'], 'match', 'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/'],
+            //[['password'], 'match', 'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/'],
+            [['password'], 'match', 'pattern' => '/^(?=.*\p{Ll})(?=.*\p{Lu})(?=.*\d)[\p{L}\d]{8,}$/u'],
             [['username'], 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9]*$/'],
             ['newpassword_repetition', 'compare', 'compareAttribute' => 'newpassword', 'on' => 'update_password'],
             [['newpassword'], 'string', 'max' => 255],
-            [['newpassword'], 'match', 'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/'],
+            [['newpassword'], 'match', 'pattern' => '/^(?=.*[\p{L}])(?=.*[\p{Lu}])(?=.*\d)[\p{L}\d]{8,}$/'],
             ['newpassword', 'required', 'on' => 'update_password'],
         ];
     }
