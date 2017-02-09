@@ -66,23 +66,12 @@ class ManagementController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $oldmodel = $this->findModel($id);
+        //$oldmodel = $this->findModel($id);
+        $model->scenario = Users::SCENARIO_UPDATE_ALL;
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->newpassword !== '') {
-                $model->scenario = Users::SCENARIO_UPDATE_PASSWORD;
-            }
-
-            if ($model->username == $oldmodel->username) {
-                $model->scenario = Users::SCENARIO_UPDATE;
-            } else { // username is also changed
-                $model->scenario = Users::SCENARIO_UPDATE_USERNAME;
-            }
-
-            if ($model->save()) {
-                Yii::$app->session->setFlash('conf', 'Data updated successfully!');
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('conf', 'Data updated successfully!');
+            return $this->redirect(['view', 'id' => $model->id]);
         }
         return $this->render('update', [
                     'model' => $model,
