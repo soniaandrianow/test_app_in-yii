@@ -28,10 +28,9 @@ class Users extends ActiveRecord implements IdentityInterface
     public $password_repetition;
     public $newpassword;
     public $newpassword_repetition;
+    public $oldAttributes;
 
-    const SCENARIO_UPDATE = 'update';
-    const SCENARIO_UPDATE_USERNAME = 'update_username';
-    const SCENARIO_UPDATE_PASSWORD = 'update_password';
+    const SCENARIO_UPDATE_ALL = 'update_all';
 
     public function behaviors()
     {
@@ -50,10 +49,7 @@ class Users extends ActiveRecord implements IdentityInterface
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        //$scenarios[]
-        $scenarios[self::SCENARIO_UPDATE] = ['username', 'firstname', 'lastname'];
-        $scenarios[self::SCENARIO_UPDATE_USERNAME] = ['username', 'firstname', 'lastname'];
-        $scenarios[self::SCENARIO_UPDATE_PASSWORD] = ['newpassword', 'newpassword_repetition'];
+        $scenarios[self::SCENARIO_UPDATE_ALL] = ['newpassword', 'newpassword_repetition', 'username', 'firstname', 'lastname'];
         return $scenarios;
     }
 
