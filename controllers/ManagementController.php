@@ -107,4 +107,20 @@ class ManagementController extends Controller
         }
     }
 
+    protected function findModelByUsername($username)
+    {
+        if (($model = Users::findOne(['username' => $username])) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    public function actionTest($username)
+    {
+        return $this->render('test', [
+                    'model' => $this->findModelByUsername($username),
+        ]);
+    }
+
 }

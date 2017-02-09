@@ -1,5 +1,4 @@
 <?php
-
 $params = require(__DIR__ . '/params.php');
 
 $config = [
@@ -7,7 +6,7 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['debug'],
     'modules' => [
-        'debug' =>[
+        'debug' => [
             'class' => 'yii\debug\Module'
         ]
     ],
@@ -43,17 +42,17 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<controller:\w+>/<action:\w+>/<username:\w+>' => '<controller>/<action>',
+                '<controller:\w+>/<view:\w+>/<username:\w+>' => '<controller>/<view>',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
-        
     ],
     'params' => $params,
 ];
