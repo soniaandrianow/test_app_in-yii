@@ -123,4 +123,33 @@ class ManagementController extends Controller
         ]);
     }
 
+    public function actionSql()
+    {
+        $query = new \yii\db\Query();
+//        $query->select(['id', 'username'])
+//                ->from(['user'])
+//                ->where(['and', ['or', ['and', ['in', 'id', [1, 2, 5]], ['like', 'username', 'afa']], ['and', ['like', 'username', 'drian'], ['>', 'created_at', '1234567']]], ['not', ['flag' => null]]])
+//                //->andWhere(['like', 'username', 'afa'])
+//                //->orWhere(['and', ['like', 'username', 'drian'], ['created_at' > '1234567']])
+//                //->andWhere(['not', ['flag' => null]])
+//                ->orderBy(['id' => SORT_DESC, 'username' => SORT_ASC])
+//                ->groupBy(['flag'])
+//                ->limit(20);
+//        //->createCommand()
+//        //->rawSql;
+
+        $query->select(['id', 'username'])
+                ->from('user')
+                ->where(['id' => [1, 2, 5]])
+                ->andWhere(['or', ['like', 'username', 'afa'], ['and', ['like', 'username', 'drian'], ['>', 'created_at', '1234567']]])
+                ->andWhere(['not', ['flag' => null]])
+                ->orderBy(['id' => SORT_DESC, 'username' => SORT_ASC])
+                ->groupBy('flag')
+                ->limit(20);
+
+        $query2 = $query->prepare(Yii::$app->db->queryBuilder)->createCommand()->rawSql;
+
+        return $this->render('sql', ['query' => $query2]);
+    }
+
 }
