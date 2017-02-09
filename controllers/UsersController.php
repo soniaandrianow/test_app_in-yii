@@ -16,11 +16,9 @@ class UsersController extends \yii\web\Controller
     public function actionRegistration()
     {
         $model = new \app\models\Users();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()) {
-                Yii::$app->session->setFlash('conf', 'Account created. Please log in.');
-                return $this->redirect(array('users/login'));
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('conf', 'Account created. Please log in.');
+            return $this->redirect(array('users/login'));
         }
         return $this->render('registration', ['model' => $model]);
     }
@@ -55,21 +53,10 @@ class UsersController extends \yii\web\Controller
         $id = Yii::$app->user->id;
         $user = Users::findOne($id);
 
-        if ($user->load(Yii::$app->request->post())) {
-            if ($user->newpassword !== '') {
-                $user->scenario = Users::SCENARIO_UPDATE_PASSWORD;
-            }
-
-            if ($user->username == Yii::$app->user->identity->username) {
-                $user->scenario = Users::SCENARIO_UPDATE;
-            } else { // username also changed
-                $user->scenario = Users::SCENARIO_UPDATE_USERNAME;
-            }
-
-            if ($user->save()) {
-                Yii::$app->session->setFlash('conf', 'Data updated successfully!');
-                return $this->redirect(['profile']);
-            }
+        $user->scenario = Users::SCENARIO_UPDATE_ALL;
+        if ($user->load(Yii::$app->request->post()) && $user->save()) {
+            Yii::$app->session->setFlash('conf', 'Data updated successfully!');
+            return $this->redirect(['profile']);
         }
         return $this->render('profile', ['model' => $user]);
     }
